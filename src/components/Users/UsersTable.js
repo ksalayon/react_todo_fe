@@ -14,10 +14,6 @@ const rows = Array.from({ length: 200 }, (_, index) => ({
 function UsersTable() {
     return (
         <Paper sx={{ width: "100%", overflow: "hidden", padding: 2 , boxSizing: "border-box"}}>
-            <Typography variant="h6" align="center" gutterBottom>
-                Virtualized Material UI Table
-            </Typography>
-
             <TableContainer sx={{ height: 500 }}>
                 <AutoSizer>
                     {({ height, width }) => (
