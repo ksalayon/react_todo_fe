@@ -2,16 +2,13 @@ import React from "react";
 import { AutoSizer, Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css"; // Default styles for react-virtualized
 import { Paper, TableContainer } from "@mui/material";
-import { faker } from "@faker-js/faker/locale/en";
+import { FetchUsersResponse } from "../../types/interfaces/ApiResponse";
 
-// Generate dummy data
-const rows = Array.from({ length: 200 }, (_, index) => ({
-    id: index + 1,
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-}));
+interface UsersTableProps {
+    users: FetchUsersResponse;
+}
 
-function UsersTable() {
+const UsersTable: React.FC<UsersTableProps> = ({ users }) => {
     return (
         <Paper
             sx={{
@@ -23,14 +20,16 @@ function UsersTable() {
         >
             <TableContainer sx={{ height: 500 }}>
                 <AutoSizer>
-                    {({ height, width }) => (
+                    {({ height, width }: { height: number; width: number }) => (
                         <Table
                             width={width}
                             height={height}
                             headerHeight={50}
                             rowHeight={50}
-                            rowCount={rows.length}
-                            rowGetter={({ index }) => rows[index]}
+                            rowCount={users.length}
+                            rowGetter={({ index }: { index: number }) =>
+                                users[index]
+                            }
                             rowClassName="tableRow"
                         >
                             {/* ID Column */}
@@ -92,6 +91,6 @@ function UsersTable() {
             </TableContainer>
         </Paper>
     );
-}
+};
 
 export default UsersTable;

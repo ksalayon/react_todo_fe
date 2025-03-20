@@ -2,6 +2,7 @@ import React, {
     ComponentType,
     ReactElement,
     SyntheticEvent,
+    useEffect,
     useState,
 } from "react";
 import UsersTable from "../../components/Users/UsersTable";
@@ -17,6 +18,9 @@ import {
 import ModalWrapper from "../../components/ModalWrapper/ModalWrapper";
 import AddUserForm from "../../components/Users/AddUserForm";
 import { ModalProjectedContentProps } from "../../types/interfaces/ModalProjectedContentProps";
+import { FetchUsersResponse } from "../../types/interfaces/ApiResponse";
+import axios from "axios";
+import { fetchUsers } from "../../services/userService";
 
 const ManageUsersPage: React.FC = () => {
     /**
@@ -30,6 +34,45 @@ const ManageUsersPage: React.FC = () => {
         undefined,
     );
     const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
+    const [users, setUsers] = useState<FetchUsersResponse>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const fetchItems = async () => {
+            try {
+                const response = await fetchUsers(controller);
+                setUsers(response);
+            } catch (err) {
+                if (!axios.isCancel(err)) {
+                    setError((err as Error).message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchItems();
+        return () => controller.abort(); // Cleanup to prevent memory leaks
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error)
+        return (
+            <div>
+                <p style={{ color: "red" }}>Error: {error}</p>
+                <button onClick={() => window.location.reload()}>Retry</button>
+            </div>
+        );
+    if (!loading && !users?.length) {
+        return (
+            <div>
+                <p style={{ color: "red" }}>There are no users to display</p>
+                <button onClick={() => window.location.reload()}>Retry</button>
+            </div>
+        );
+    }
 
     const handleOpen = (
         Component: ComponentType<ModalProjectedContentProps>,
@@ -106,7 +149,7 @@ const ManageUsersPage: React.FC = () => {
                     handleSuccess={() => handleAddUserSuccess()}
                 />
             ) : null}
-            <UsersTable />
+            {users && <UsersTable users={users} />}
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={snackBarOpen}

@@ -4,6 +4,8 @@ export interface AddUserResponse {
     email: string;
 }
 
+export type FetchUsersResponse = AddUserResponse[];
+
 export interface ApiErrorResponse {
     response?: { data?: { message?: string } };
 }
