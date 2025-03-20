@@ -1,11 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import {HeaderWrapper, NavList, NavItem} from "./style";
+import { Link } from "react-router-dom";
+import { HeaderWrapper, NavItem, NavList } from "./style";
 // Styled Components
 
-// React Component
-const Header = () => {
+const Header: React.FC = () => {
     return (
         <HeaderWrapper>
             <nav>
@@ -17,7 +14,7 @@ const Header = () => {
                         <Link to="/admin/users">Users</Link>
                     </NavItem>
                     <NavItem>
-                        <Link to="/admin/todos">To-Do's</Link>
+                        <Link to="/admin/todos">To-Do&apos;s</Link>
                     </NavItem>
                 </NavList>
             </nav>

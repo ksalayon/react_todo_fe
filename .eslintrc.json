@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    //    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    // Disables the rule that requires React in scope
+    "indent": [
+      "error",
+      4
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "tabWidth": 4,
+        "useTabs": false
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+      // Auto-detect React version
+    }
+  }
+}

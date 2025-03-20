@@ -1,5 +1,5 @@
 {
-  "name": "family_feud_fe",
+  "name": "react_todo_fe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -47,6 +47,13 @@
     ]
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.6.0"
+    "@faker-js/faker": "^9.6.0",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.3",
+    "typescript": "^4.9.5"
   }
 }
