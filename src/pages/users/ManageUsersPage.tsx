@@ -2,10 +2,9 @@ import React, {
     ComponentType,
     ReactElement,
     SyntheticEvent,
-    useEffect,
-    useState,
+    useReducer,
 } from "react";
-import UsersTable from "../../components/Users/UsersTable";
+import UsersTable from "../../features/Users/UsersTable";
 import {
     Alert,
     AppBar,
@@ -16,46 +15,27 @@ import {
     Typography,
 } from "@mui/material";
 import ModalWrapper from "../../components/ModalWrapper/ModalWrapper";
-import AddUserForm from "../../components/Users/AddUserForm";
+import AddUserForm from "../../features/Users/AddUserForm";
 import { ModalProjectedContentProps } from "../../types/interfaces/ModalProjectedContentProps";
-import { FetchUsersResponse } from "../../types/interfaces/ApiResponse";
-import axios from "axios";
-import { fetchUsers } from "../../services/userService";
+import { useUsers } from "../../features/Users/hooks/useUsers";
+import { manageUserPageReducer, ManageUsersPageState } from "./reducer";
 
 const ManageUsersPage: React.FC = () => {
     /**
      * Modal related states
      */
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
-    const [currentComponent, setCurrentComponent] =
-        useState<ComponentType<ModalProjectedContentProps>>();
-    const [modalTitle, setModalTitle] = useState<string>("");
-    const [modalActions, setModalActions] = useState<ReactElement | undefined>(
-        undefined,
-    );
-    const [snackBarOpen, setSnackBarOpen] = useState<boolean>(false);
-    const [users, setUsers] = useState<FetchUsersResponse>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const { users, loading, error } = useUsers();
+    const initialState: ManageUsersPageState = {
+        modalOpen: false,
+        currentComponent: null,
+        modalTitle: "",
+        modalActions: undefined,
+        snackBarOpen: false,
+        loading: true,
+        error: null,
+    };
 
-    useEffect(() => {
-        const controller = new AbortController();
-        const fetchItems = async () => {
-            try {
-                const response = await fetchUsers(controller);
-                setUsers(response);
-            } catch (err) {
-                if (!axios.isCancel(err)) {
-                    setError((err as Error).message);
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchItems();
-        return () => controller.abort(); // Cleanup to prevent memory leaks
-    }, []);
+    const [state, dispatch] = useReducer(manageUserPageReducer, initialState);
 
     if (loading) return <p>Loading...</p>;
     if (error)
@@ -79,15 +59,14 @@ const ManageUsersPage: React.FC = () => {
         title: string,
         actions: ReactElement,
     ) => {
-        setCurrentComponent(() => Component);
-        setModalTitle(title);
-        setModalActions(actions);
-        setModalOpen(true);
+        dispatch({ type: "SET_CURRENT_COMPONENT", payload: Component });
+        dispatch({ type: "SET_MODAL_TITLE", payload: title });
+        dispatch({ type: "TOGGLE_MODAL", payload: true });
     };
 
     const handleAddUserSuccess = () => {
-        setModalOpen(false);
-        setSnackBarOpen(true);
+        dispatch({ type: "TOGGLE_MODAL", payload: false });
+        dispatch({ type: "TOGGLE_SNACKBAR", payload: true });
     };
 
     const handleSnackbarClose = (
@@ -98,10 +77,8 @@ const ManageUsersPage: React.FC = () => {
         if (reason === "clickaway") {
             return;
         }
-
-        setSnackBarOpen(false); // Close the Snackbar
+        dispatch({ type: "TOGGLE_SNACKBAR", payload: false });
     };
-    console.log("manage user currentComponent", currentComponent);
     return (
         <>
             <Box sx={{ flexGrow: 1 }}>
@@ -122,7 +99,12 @@ const ManageUsersPage: React.FC = () => {
                                     "Create New User",
                                     <>
                                         <Button
-                                            onClick={() => setModalOpen(false)}
+                                            onClick={() =>
+                                                dispatch({
+                                                    type: "TOGGLE_MODAL",
+                                                    payload: true,
+                                                })
+                                            }
                                         >
                                             Cancel
                                         </Button>
@@ -140,19 +122,22 @@ const ManageUsersPage: React.FC = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            {currentComponent ? (
+            {state.currentComponent && (
                 <ModalWrapper
-                    open={modalOpen}
-                    handleClose={() => setModalOpen(false)}
-                    title={modalTitle}
-                    ContentComponent={currentComponent}
+                    open={state.modalOpen}
+                    actions={state.modalActions}
+                    handleClose={() =>
+                        dispatch({ type: "TOGGLE_MODAL", payload: false })
+                    }
+                    title={state.modalTitle}
+                    ContentComponent={state.currentComponent}
                     handleSuccess={() => handleAddUserSuccess()}
                 />
-            ) : null}
+            )}
             {users && <UsersTable users={users} />}
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                open={snackBarOpen}
+                open={state.snackBarOpen}
                 onClose={handleSnackbarClose}
                 autoHideDuration={5000}
             >

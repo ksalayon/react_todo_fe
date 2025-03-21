@@ -20,7 +20,10 @@
     // Disables the rule that requires React in scope
     "indent": [
       "error",
-      4
+      4,
+      {
+        "SwitchCase": 1
+      }
     ],
     "prettier/prettier": [
       "error",
