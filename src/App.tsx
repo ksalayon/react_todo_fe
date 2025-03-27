@@ -5,6 +5,7 @@ import ManageUsersPage from "./pages/users/ManageUsersPage";
 import ManageTodosPage from "./pages/todos/ManageTodosPage";
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 const App: React.FC = () => {
     return (
@@ -14,8 +15,22 @@ const App: React.FC = () => {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<HomePage />} />{" "}
                     {/* Renders at '/' */}
-                    <Route path="admin/users" element={<ManageUsersPage />} />
-                    <Route path="admin/todos" element={<ManageTodosPage />} />
+                    <Route
+                        path="admin/users"
+                        element={
+                            <ProtectedRoute allowedRoles={["admin"]}>
+                                <ManageUsersPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="admin/todos"
+                        element={
+                            <ProtectedRoute allowedRoles={["admin"]}>
+                                <ManageTodosPage />
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
                 </Route>
