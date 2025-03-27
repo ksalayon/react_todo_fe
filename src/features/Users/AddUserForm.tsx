@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
-import bcrypt from "bcryptjs";
 import { Box, Button, Container, TextField } from "@mui/material";
 import { addUser } from "../../services/userService";
 import { AddUserRequest } from "../../types/interfaces/ApiRequest";
@@ -22,19 +21,11 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ successCallback }) => {
     // Function to handle form submission
     const onSubmit = async (data: AddUserRequest) => {
         // Encrypt password before sending to backend
-        const hashedPassword = await bcrypt.hash(data.password, 10);
         setError(null);
-
-        // Create user object
-        const newUser = {
-            name: data.name,
-            email: data.email,
-            password: hashedPassword, // Encrypted password
-        };
 
         try {
             // Make a POST request to the backend
-            const response = await addUser(newUser);
+            const response = await addUser(data);
             // Notify parent component of new user addition
             if (successCallback) {
                 successCallback(response);

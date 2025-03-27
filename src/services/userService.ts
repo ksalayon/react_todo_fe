@@ -5,9 +5,14 @@ import {
     AddUserResponse,
     FetchUsersResponse,
 } from "../types/interfaces/ApiResponse";
+import bcrypt from "bcryptjs";
 
 export const addUser = async (userData: AddUserRequest) => {
-    const response = await axios.post(ApiUtil.envWrap("/users"), userData);
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const response = await axios.post(ApiUtil.envWrap("/users"), {
+        ...userData,
+        password: hashedPassword,
+    });
     console.log("response", response);
     return response.data as AddUserResponse;
 };

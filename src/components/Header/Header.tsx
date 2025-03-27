@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HeaderWrapper, NavItem, NavList } from "./style";
+import DropDownMenu from "../DropDownMenu/DropDownMenu";
 // Styled Components
 
 const Header: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <HeaderWrapper>
             <nav>
@@ -18,6 +21,24 @@ const Header: React.FC = () => {
                     </NavItem>
                 </NavList>
             </nav>
+            <DropDownMenu
+                anchor={{
+                    label: "Home",
+                    selectHandler: () => navigate("/"),
+                }}
+                menuItems={[
+                    {
+                        label: "Login",
+                        selectHandler: () => {
+                            navigate("/login");
+                        },
+                    },
+                    {
+                        label: "Sign-Up",
+                        selectHandler: () => navigate("/signup"),
+                    },
+                ]}
+            ></DropDownMenu>
         </HeaderWrapper>
     );
 };
