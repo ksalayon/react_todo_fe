@@ -1,7 +1,7 @@
 // auth-context.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { CurrentUser } from "../types/interfaces/User";
-import { authenticate } from "../services/authService";
+import { authenticate } from "../services/api/authService";
 
 interface AuthProviderProps {
     children: React.ReactNode;

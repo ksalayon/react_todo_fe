@@ -2,7 +2,7 @@ import { Box, Button, Container, TextField } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginRequest } from "../../types/interfaces/ApiRequest";
-import { authenticate } from "../../services/authService";
+import { authenticate } from "../../services/api/authService";
 import { AxiosError } from "axios";
 
 const LoginPage: React.FC = () => {

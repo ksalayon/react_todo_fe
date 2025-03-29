@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchUsers } from "../../../services/userService";
+import { fetchUsers } from "../../../services/api/userService";
 import axios from "axios";
 import { FetchUsersResponse } from "../../../types/interfaces/ApiResponse";
 

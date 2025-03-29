@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, Container, TextField } from "@mui/material";
-import { addUser } from "../../services/userService";
+import { addUser } from "../../services/api/userService";
 import { AddUserRequest } from "../../types/interfaces/ApiRequest";
 import { AxiosError } from "axios";
 

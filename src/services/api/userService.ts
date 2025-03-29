@@ -1,10 +1,10 @@
 import axios from "axios";
-import { ApiUtil } from "../utils/api.util";
-import { AddUserRequest } from "../types/interfaces/ApiRequest";
+import { ApiUtil } from "../../utils/api.util";
+import { AddUserRequest } from "../../types/interfaces/ApiRequest";
 import {
     AddUserResponse,
     FetchUsersResponse,
-} from "../types/interfaces/ApiResponse";
+} from "../../types/interfaces/ApiResponse";
 import bcrypt from "bcryptjs";
 
 export const addUser = async (userData: AddUserRequest) => {
