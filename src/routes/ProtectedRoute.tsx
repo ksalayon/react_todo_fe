@@ -14,13 +14,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteData> = ({
     redirectTo = "/unauthorized",
     children,
 }) => {
-    const user = useAuth();
+    const authContext = useAuth();
 
-    if (!user?.isAuthenticated) {
+    if (!authContext?.currentUser?.isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 
-    if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+    if (
+        allowedRoles.length > 0 &&
+        !allowedRoles.includes(authContext.currentUser.role)
+    ) {
         return <Navigate to={redirectTo} replace />;
     }
 
