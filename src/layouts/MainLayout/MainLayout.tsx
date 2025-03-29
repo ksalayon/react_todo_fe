@@ -16,7 +16,7 @@ const styles = {
     },
 };
 
-const Layout: React.FC = () => {
+const MainLayout: React.FC = () => {
     return (
         <div style={styles.container as CSSProperties}>
             <Header />
@@ -28,4 +28,4 @@ const Layout: React.FC = () => {
     );
 };
 
-export default Layout;
+export default MainLayout;

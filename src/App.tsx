@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
+import MainLayout from "./layouts/MainLayout/MainLayout";
 import HomePage from "./pages/HomePage";
 import ManageUsersPage from "./pages/users/ManageUsersPage";
 import ManageTodosPage from "./pages/todos/ManageTodosPage";
@@ -11,8 +11,8 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                {/* Main Layout wrapping all routes */}
-                <Route path="/" element={<Layout />}>
+                {/* Main MainLayout wrapping all routes */}
+                <Route path="/" element={<MainLayout />}>
                     <Route index element={<HomePage />} />{" "}
                     {/* Renders at '/' */}
                     <Route

@@ -4,7 +4,7 @@ import React, {
     SyntheticEvent,
     useReducer,
 } from "react";
-import UsersTable from "../../features/Users/UsersTable";
+import UsersTable from "../../features/users/components/UsersTable";
 import {
     Alert,
     AppBar,
@@ -15,9 +15,9 @@ import {
     Typography,
 } from "@mui/material";
 import ModalWrapper from "../../components/ModalWrapper/ModalWrapper";
-import AddUserForm from "../../features/Users/AddUserForm";
+import AddUserForm from "../../features/users/components/AddUserForm";
 import { ModalProjectedContentProps } from "../../types/interfaces/ModalProjectedContentProps";
-import { useUsers } from "../../features/Users/hooks/useUsers";
+import { useUsers } from "../../features/users/hooks/useUsers";
 import { manageUserPageReducer, ManageUsersPageState } from "./reducer";
 
 const ManageUsersPage: React.FC = () => {

@@ -2,7 +2,7 @@ import React from "react";
 import { AutoSizer, Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css"; // Default styles for react-virtualized
 import { Paper, TableContainer } from "@mui/material";
-import { FetchUsersResponse } from "../../types/interfaces/ApiResponse";
+import { FetchUsersResponse } from "../../../types/interfaces/ApiResponse";
 
 interface UsersTableProps {
     users: FetchUsersResponse;

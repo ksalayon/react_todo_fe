@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { HeaderWrapper, NavItem, NavList } from "./style";
-import DropDownMenu from "../DropDownMenu/DropDownMenu";
+import DropDownMenu from "../../../components/DropDownMenu/DropDownMenu";
 // Styled Components
 
 const Header: React.FC = () => {
