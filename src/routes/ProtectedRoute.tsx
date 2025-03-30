@@ -1,7 +1,7 @@
 // ProtectedRoute.tsx
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/auth-context";
-import { Role } from "../types/interfaces/User";
+import { useAuth } from "../contexts/AuthContext";
+import { Role } from "../types/interfaces/Role";
 
 interface ProtectedRouteData {
     allowedRoles: Array<Role>;

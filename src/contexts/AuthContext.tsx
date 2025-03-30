@@ -1,4 +1,4 @@
-// auth-context.tsx
+// AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { CurrentUser } from "../types/interfaces/User";
 import { authenticate } from "../services/api/authService";

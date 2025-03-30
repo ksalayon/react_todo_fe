@@ -1,4 +1,4 @@
-import { Role } from "./User";
+import { Role } from "./Role";
 
 export interface AddUserResponse {
     id: number;
