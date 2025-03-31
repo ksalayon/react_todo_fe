@@ -1,5 +1,5 @@
 // ProtectedRoute.tsx
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Role } from "../types/interfaces/Role";
 
@@ -15,9 +15,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteData> = ({
     children,
 }) => {
     const authContext = useAuth();
+    const location = useLocation();
 
-    if (!authContext?.currentUser?.isAuthenticated) {
-        return <Navigate to="/login" replace />;
+    if (!authContext?.currentUser?.slt) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     if (

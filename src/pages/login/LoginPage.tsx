@@ -2,8 +2,9 @@ import { Box, Button, Container, TextField } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginRequest } from "../../types/interfaces/ApiRequest";
-import { authenticate } from "../../services/api/authService";
 import { AxiosError } from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const LoginPage: React.FC = () => {
     const {
@@ -13,13 +14,29 @@ const LoginPage: React.FC = () => {
     } = useForm<LoginRequest>();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = (location.state as any)?.from?.pathname || "/";
+    const authContext = useAuth();
+    console.log(location);
+    console.log(from);
     const onSubmit = async (data: LoginRequest) => {
         // Encrypt password before sending to backend
         setError(null);
+        if (!authContext) {
+            setIsSubmitting(false);
+            return;
+            // log to raygun - AUthContext not defined
+        }
 
         try {
             // Make a POST request to the backend
-            const response = await authenticate(data);
+            const response = await authContext.login(data);
+            if (response && response.slt) {
+                navigate(from, { replace: true });
+            } else {
+                setError("Unable to authenticate user");
+            }
         } catch (err: unknown) {
             // Handle any errors, including server errors
             if (err instanceof AxiosError) {

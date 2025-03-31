@@ -13,6 +13,6 @@ export interface ApiErrorResponse {
 }
 
 export interface LoginResponse extends AddUserResponse {
-    stl: string;
+    slt: string;
     user: AddUserResponse & { role: Role };
 }

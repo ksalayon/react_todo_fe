@@ -2,6 +2,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { CurrentUser } from "../types/interfaces/User";
 import { authenticate } from "../services/api/authService";
+import { LoginRequest } from "../types/interfaces/ApiRequest";
+import { LoginResponse } from "../types/interfaces/ApiResponse";
 
 interface AuthProviderProps {
     children: React.ReactNode;
@@ -9,7 +11,9 @@ interface AuthProviderProps {
 
 interface AuthContextProps {
     currentUser: CurrentUser | null;
-    login: (email: string, password: string) => Promise<void>;
+    login: (
+        loginCredentials: LoginRequest,
+    ) => Promise<LoginResponse | undefined>;
     logout: () => void;
 }
 
@@ -26,15 +30,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }, []);
 
-    const login = async (email: string, password: string) => {
-        const response = await authenticate({ email, password });
-
-        setUser({
-            ...response.user,
-            stl: response.stl,
-            isAuthenticated: !!response.stl,
-        });
-        localStorage.setItem("user", JSON.stringify(response.user));
+    const login = async (loginCredentials: LoginRequest) => {
+        try {
+            const response = await authenticate(loginCredentials);
+            setUser({
+                ...response.user,
+                slt: response.slt,
+                isAuthenticated: !!response.slt,
+            });
+            localStorage.setItem("user", JSON.stringify(response.user));
+            return response;
+        } catch (e) {
+            throw new Error("Unable to authenticate user");
+        }
     };
 
     const logout = () => {
