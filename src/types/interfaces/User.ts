@@ -1,11 +1,3 @@
-import { AddUserResponse, LoginResponse } from "./ApiResponse";
-import { Role } from "./Role";
+import { LoginResponse } from "./ApiResponse";
 
-export interface AuthData {
-    role: Role;
-    isAuthenticated?: boolean;
-}
-
-export type User = AddUserResponse;
-
-export type CurrentUser = User & AuthData & Omit<LoginResponse, "user">;
+export type CurrentUser = LoginResponse & { isAuthenticated?: boolean };

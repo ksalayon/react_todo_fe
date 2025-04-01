@@ -34,11 +34,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
             const response = await authenticate(loginCredentials);
             setUser({
-                ...response.user,
+                ...response,
                 slt: response.slt,
                 isAuthenticated: !!response.slt,
             });
-            localStorage.setItem("user", JSON.stringify(response.user));
+            localStorage.setItem("user", JSON.stringify(response));
             return response;
         } catch (e) {
             throw new Error("Unable to authenticate user");

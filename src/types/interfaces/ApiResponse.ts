@@ -14,5 +14,5 @@ export interface ApiErrorResponse {
 
 export interface LoginResponse extends AddUserResponse {
     slt: string;
-    user: AddUserResponse & { role: Role };
+    role: Role;
 }
