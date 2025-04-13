@@ -1,11 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
 import { HeaderWrapper, NavItem, NavList } from "./style";
 import DropDownMenu from "../../../components/DropDownMenu/DropDownMenu";
+import { useAuth } from "../../../contexts/AuthContext";
 // Styled Components
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
-
+    const authContext = useAuth();
+    const menuItems = [
+        {
+            label: "Login",
+            selectHandler: () => {
+                navigate("/login");
+            },
+        },
+        {
+            label: "Sign-Up",
+            selectHandler: () => navigate("/signup"),
+        },
+    ];
+    if (authContext?.currentUser?.slt) {
+        menuItems.push({
+            label: "Log out",
+            selectHandler: () => {
+                authContext?.logout();
+                // navigate("/login");
+            },
+        });
+    }
     return (
         <HeaderWrapper>
             <nav>
@@ -26,18 +48,7 @@ const Header: React.FC = () => {
                     label: "Home",
                     selectHandler: () => navigate("/"),
                 }}
-                menuItems={[
-                    {
-                        label: "Login",
-                        selectHandler: () => {
-                            navigate("/login");
-                        },
-                    },
-                    {
-                        label: "Sign-Up",
-                        selectHandler: () => navigate("/signup"),
-                    },
-                ]}
+                menuItems={menuItems}
             ></DropDownMenu>
         </HeaderWrapper>
     );
