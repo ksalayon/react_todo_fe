@@ -7,11 +7,7 @@ import {
     IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ModalProjectedContentProps } from "../../types/interfaces/ModalProjectedContentProps"; // interface ProjectedContentProps {
-
-// interface ProjectedContentProps {
-//     successCallback: (arg: unknown) => void;
-// }
+import { ModalProjectedContentProps } from "../../types/interfaces/ModalProjectedContentProps";
 
 interface ModalWrapperProps {
     open: boolean;
@@ -30,8 +26,6 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({
     handleSuccess,
     actions,
 }) => {
-    console.log("ContentComponent", ContentComponent);
-    console.log("actions", actions);
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             {/* Title */}
