@@ -10,7 +10,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface DropDownMenuItemProps {
+export interface DropDownMenuItemProps {
     label: string;
     selectHandler: () => void;
 }

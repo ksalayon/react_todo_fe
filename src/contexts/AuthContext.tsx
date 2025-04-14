@@ -4,12 +4,13 @@ import { CurrentUser } from "../types/interfaces/User";
 import { authenticate } from "../services/api/authService";
 import { LoginRequest } from "../types/interfaces/ApiRequest";
 import { LoginResponse } from "../types/interfaces/ApiResponse";
+import { loginDataToCurrentUser } from "./authContext.util";
 
 interface AuthProviderProps {
     children: React.ReactNode;
 }
 
-interface AuthContextProps {
+export interface AuthContextProps {
     currentUser: CurrentUser | null;
     isLoading: boolean;
     login: (
@@ -28,7 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
+            setUser(loginDataToCurrentUser(JSON.parse(storedUser)));
         }
         setIsLoading(false);
     }, []);
@@ -36,11 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const login = async (loginCredentials: LoginRequest) => {
         try {
             const response = await authenticate(loginCredentials);
-            setUser({
-                ...response,
-                slt: response.slt,
-                isAuthenticated: !!response.slt,
-            });
+            setUser(loginDataToCurrentUser(response));
             localStorage.setItem("user", JSON.stringify(response));
             return response;
         } catch (e) {
