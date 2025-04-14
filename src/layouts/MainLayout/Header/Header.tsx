@@ -24,7 +24,6 @@ const Header: React.FC = () => {
             label: "Log out",
             selectHandler: () => {
                 authContext?.logout();
-                // navigate("/login");
             },
         });
     }

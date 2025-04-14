@@ -11,6 +11,7 @@ interface AuthProviderProps {
 
 interface AuthContextProps {
     currentUser: CurrentUser | null;
+    isLoading: boolean;
     login: (
         loginCredentials: LoginRequest,
     ) => Promise<LoginResponse | undefined>;
@@ -21,13 +22,15 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<CurrentUser | null>(null);
+    const [isLoading, setIsLoading] = useState(true); // <-- loading state
 
-    // Optional: Persist auth from localStorage/sessionStorage
+    // Persist auth from localStorage
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
+        setIsLoading(false);
     }, []);
 
     const login = async (loginCredentials: LoginRequest) => {
@@ -51,7 +54,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ currentUser: user, login, logout }}>
+        <AuthContext.Provider
+            value={{ currentUser: user, login, logout, isLoading }}
+        >
             {children}
         </AuthContext.Provider>
     );
